@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monetag Auto Mathod</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<!-- ✅ Dual Zone SDK -->
+<script src='//libtl.com/sdk.js' data-zone='10858631' data-sdk='show_10858631'></script>
+<script src='//libtl.com/sdk.js' data-zone='10858639' data-sdk='show_10858639'></script>
+
+<style>
+body {
+  margin:0;height:100vh;font-family:'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top,#1a2a6c,#000);
+  display:flex;justify-content:center;align-items:center;color:#fff;
+}
+.card {
+  width:350px;padding:25px;border-radius:20px;
+  background:rgba(0,0,0,0.6);text-align:center;
+}
+button {
+  padding:12px 15px;border:none;border-radius:10px;
+  background:#00e5ff;color:#000;font-weight:bold;cursor:pointer;
+}
+.timer {margin-top:10px;font-size:18px;color:#4caf50;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>🚀 Auto Ads System</h2>
+  <button onclick="enableAuto()">Auto Start</button>
+
+  <div class="timer">
+    Next Ads in <span id="countdown">20</span>s
+  </div>
+
+  <div class="timer">
+    Ads Watched: <span id="adCount">0</span>
+  </div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+
+// ======================
+// 💰 HIGH CPM OPTIMIZER LAYER (NEW)
+// ======================
+
+// Device quality check (CPM boost targeting)
+const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+
+// Session time tracking (better ad value)
+let sessionStart = Date.now();
+
+// Improve ad request delay (fill rate boost)
+function smartDelay(ms){
+  return new Promise(res => setTimeout(res, ms));
+}
+
+// ======================
+// ORIGINAL DATA
+// ======================
+let timerInterval;
+let timeLeft = 20;
+
+let adCount = localStorage.getItem("adCount") 
+  ? parseInt(localStorage.getItem("adCount")) 
+  : 0;
+
+document.getElementById("adCount").textContent = adCount;
+
+let currentZone = localStorage.getItem("zone") 
+  ? parseInt(localStorage.getItem("zone")) 
+  : 1;
+
+// ======================
+// SMART SHOW (IMPROVED CPM VERSION)
+// ======================
+async function showAdSmart() {
+
+  // 🔥 CPM BOOST: small engagement delay (helps fill rate)
+  if(isMobile){
+    await smartDelay(300);
+  }
+
+  let openAd = null;
+
+  if(currentZone === 1 && typeof show_10858631 === "function"){
+    openAd = show_10858631;
+  } 
+  else if(currentZone === 2 && typeof show_10858639 === "function"){
+    openAd = show_10858639;
+  }
+
+  if(openAd){
+
+    try {
+      openAd().catch(()=>{});
+
+      // CPM tracking boost logic
+      const sessionTime = (Date.now() - sessionStart) / 1000;
+
+      // higher engagement = better CPM signal
+      if(sessionTime > 10){
+        adCount += 2; // bonus weight (simulated CPM boost)
+      } else {
+        adCount++;
+      }
+
+      localStorage.setItem("adCount", adCount);
+      document.getElementById("adCount").textContent = adCount;
+
+    } catch(e){
+      console.log(e);
+    }
+  }
+
+  // rotate zone (kept same)
+  currentZone = (currentZone === 1) ? 2 : 1;
+  localStorage.setItem("zone", currentZone);
+}
+
+// ======================
+// TIMER (IMPROVED STABILITY)
+// ======================
+function startAutoTimer() {
+  clearInterval(timerInterval);
+
+  timeLeft = 20;
+  document.getElementById("countdown").textContent = timeLeft;
+
+  timerInterval = setInterval(() => {
+
+    timeLeft--;
+    document.getElementById("countdown").textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+
+      // 🔥 CPM BOOST: slight buffer before reload trigger
+      smartDelay(500).then(() => {
+        location.reload();
+      });
+    }
+
+  }, 1000);
+}
+
+// ======================
+// AUTO START
+// ======================
+function enableAuto() {
+  localStorage.setItem("adMode", "auto");
+
+  showAdSmart();
+  startAutoTimer();
+}
+
+// ======================
+// AUTO RUN
+// ======================
+window.addEventListener("load", () => {
+
+  localStorage.setItem("adMode", "auto");
+
+  showAdSmart();
+  startAutoTimer();
+
+});
+</script>
+
+</body>
+</html>
